@@ -1,0 +1,346 @@
+---
+title: " Facebook ad analysis"
+author: "Zahraa Alshalal"
+date: '2023-02-18'
+output: word_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+## libraries    
+
+```{r}
+# packages
+library(dplyr)
+library(tidyverse)
+library(heatmaply)
+library(MASS)
+library(DataExplorer)
+library(Hmisc)
+library(polycor)
+```  
+## end of library (ignore top)
+****    
+
+```{r}
+#import data
+data = read.csv("~/Desktop/spring23/math697/rcode/facebook/fbdata.csv")
+# look at the data
+glimpse(data)
+```     
+
+##### The documenation describes the columns in the data as follows:   
+    
+#### 1.) ad_id: unique ID for each ad.     
+    
+#### 2.) xyz_campaign_id: an ID associated with each ad campaign of XYZ company.    
+     
+#### 3.) fb_campaign_id: an ID associated with how Facebook tracks each campaign.     
+      
+#### 4.) age: age of the person to whom the ad is shown.     
+     
+#### 5.) gender: gender of the person to whom the add is shown    
+    
+#### 6.) interest: a code specifying the category to which the person’s interest belongs (interests are as mentioned in the person’s Facebook public profile).     
+     
+#### 7.) Impressions: the number of times the ad was shown.     
+     
+#### 8.) Clicks: number of clicks on for that ad.     
+     
+#### 9.) Spent: Amount paid by company xyz to Facebook, to show that ad.      
+     
+#### 10.) Total conversion: Total number of people who enquired about the product after seeing the ad.     
+     
+#### 11.) Approved conversion: Total number of people who bought the product after seeing the ad.    
+#### We can see that most of the variables are numerical, but two are character. It is good turn those into numerical data,  as that will allow us to perform certain functions later.  
+
+     
+```{r}
+# look for unique values in 'age' column
+unique(data$age)
+unique(data$xyz_campaign_id)
+
+```     
+
+```{r}
+# create copy of data for editing
+dataCopy = data
+
+# replace character string age ranges with number
+dataCopy$age[dataCopy$age == '30-34'] = 32
+dataCopy$age[dataCopy$age == '35-39'] = 37
+dataCopy$age[dataCopy$age == '40-44'] = 42
+dataCopy$age[dataCopy$age == '45-49'] = 47
+
+# convert variable to integer
+dataCopy$age <- as.integer(dataCopy$age)
+
+# let's just check that age variable now
+unique(dataCopy$age)
+str(dataCopy$age)
+```       
+```{r}
+# convert gender variable to integer
+
+dataCopy$gender[dataCopy$gender == 'M'] = 0
+dataCopy$gender[dataCopy$gender == 'F'] = 1
+dataCopy$gender = as.integer(dataCopy$gender)
+
+# abbreviate some variable names
+dataCopy = dataCopy %>%
+  rename(xyzCampId = xyz_campaign_id, fbCampId = fb_campaign_id, impr = Impressions,
+        conv = Total_Conversion, appConv = Approved_Conversion)
+
+# look at the data after changes
+glimpse(dataCopy)
+```    
+#### from the output above, we've now got all our columns as numerical variables. analysis with some unsupervised learning.    
+#### The purpose of this heatmap is just to get a quick overview of the data, so the pre-processing that we have done has been less comprehensive than if we were using it to get down to the serious nuts and bolts of the dataset. 
+#### using heatmaps as a first step in analysing genomic microarray data. As we've converted our data to numeric, we could convert it into a matrix and use the heatmap function.    
+#### using unsupervised learning to analyze the data.
+```{r}
+# Create heatmap
+dataMatNorm = as.matrix(normalize(dataCopy, method = "standardize"))
+heatmap(dataMatNorm)
+pairs(dataCopy)
+```    
+
+### Creating additional features:    
+#### Adding standard metrics that are missing now.    
+#### 1) CTR = Click-through-rate: the percentage of how many of our impressions became clicks.    
+#### 2) CPC = Cost Per Click: how much (on average) did each click cost.     
+```{r}
+# create the CTR and CPC figures using the mutate   
+dataCopy = dataCopy %>%
+  mutate(CTR = ((Clicks / impr) * 100), CPC = Spent / Clicks)
+
+dataCopy$CTR = round(dataCopy$CTR, 4)
+dataCopy$CPC = round(dataCopy$CPC, 2)
+glimpse(dataCopy)
+```     
+#### Trim out the campaign and demographic variables.   
+```{r}
+snapfit1 = lm(Spend ~ impr + criterias + age + Gender, data = train.snap)
+summary(snapfit1)
+```
+
+```{r}
+# create trimmed dataset
+dataCopyTrim = dataCopy %>% 
+  dplyr::select(CTR, CPC, appConv, conv, impr, Spent, Clicks)
+
+# omit missing values, normalise data, calculate correlations and plot heatmap
+heatmap(cor(normalize(na.omit(dataCopyTrim))))
+
+fbfit = lm(Spent ~ impr + conv  + Clicks, data = dataCopy)
+summary(fbfit)
+
+# Residual Plot
+
+plot(fbfit , 1)
+
+```    
+#### There is some strong correlations between the amount we spent and how many impressions and clicks we got, with less strong correlations between our spend, clicks and impressions and our conversions.    
+## We could follow this up and calculate the significance of these correlations. (If we want to!!!)
+#### For the next stage in the analysis let's choose a campaign that consumes the most money and regularly get the most conversions (and for which we have the most data!).
+```{r}
+# set plot size options
+options(repr.plot.width=4, repr.plot.height=3)
+
+ggplot(dataCopy, aes(as.factor(xyzCampId), Spent)) +
+geom_boxplot() +
+labs(x = "Campaign", y = "Advertising Spend")
+
+
+ggplot(dataCopy, aes(as.factor(xyzCampId), conv)) + 
+geom_boxplot() +
+labs(x = "Campaign", y = "Conversions")
+```     
+#### Looks like campaign '1178' is the one to go for, so we'll create a new dataframe that just includes the data from that campaign using dplyr's filter function.    
+
+```{r}
+# taking a deeper look at campaign '1178'
+data1178 <- data %>%
+  rename(xyzCampId = xyz_campaign_id, fbCampId = fb_campaign_id, impr = Impressions,
+        conv = Total_Conversion, appConv = Approved_Conversion) %>%
+  filter(xyzCampId == 1178)
+
+glimpse(data1178)
+```   
+```{r}
+# look for missing data
+plot_missing(data1178)
+```    
+#### Nothing missing, good to know.   
+#### Next plot is The distributions of our data, variable by variable:
+```{r}
+options(repr.plot.width=4, repr.plot.height=4)
+plot_bar(data1178)
+```   
+
+```{r}
+options(repr.plot.width=8, repr.plot.height=4)
+plot_histogram(data1178)
+```    
+
+```{r}
+
+# i can not figure out this plot :(
+# and we'll revisit our correlation matrix for the 1178 campaign
+
+#plot_correlation(data1178, use = "pairwise.complete.obs")
+ 
+```   
+##### This overview of the dataset allows us to understand what's going on with the variables in this campaign. We have an idea about the distributions this helps with the thought process for any further calculations.     
+
+### More feature engineering:   
+#### let's assume that an enquiry (Total conversion: conv) is worth $5, and a sale (Approved conversion: appConv) is worth $100. We can now create our conversion value-based variables sing mutate: 
+```{r}
+data1178 <- data1178 %>%
+  mutate(totConv = conv + appConv,
+        conVal = conv * 5,
+        appConVal = appConv * 100) %>%
+  mutate(totConVal = conVal + appConVal) %>%
+  mutate(costPerCon = round(Spent / totConv, 2),
+        ROAS = round(totConVal / Spent, 2))
+data1178 <- data1178 %>%
+  # CPM= Cost Per Mille: new feature we are adding:This number is the cost of one thousand impressions.
+  mutate(CPM = round((Spent / impr) * 1000, 2))
+
+# take a look at our new variables
+head(data1178)
+```    
+#### there is a row with no clicks, but that has a conversion, giving us a ROAS (Return on Advertising Spend) of infinity. This could perhaps have happened if a conversion was attributed to the campaign, but either the click wasn't tracked, or occurred at a different time and has been attributed elsewhere.
+#### It's still a conversion, so we want it in there for the purposes of our aggregrate statistics, but we do need to remember that it's there and consider what that might be doing as we work through our analyses.   
+
+
+### Preliminary analysis of campaign 1178:   
+#### we'll assume that campaign 1178 is an e-commerce business that is purely focussed on maximising revenue.    
+#### We'll start by looking at what happens to the number of conversions and the value of our conversions when we spend more money on our campaign. If we spend more, do we get more back?    
+```{r}
+options(repr.plot.width=6, repr.plot.height=3)
+ggplot(data1178, aes(Spent, totConv)) + geom_point() + geom_smooth(method = "lm") +
+  labs(x = "Amount spent on campaign", y = "Total number of conersions")
+ggplot(data1178, aes(Spent, totConVal)) + geom_point() + geom_smooth(method = "lm") +
+  labs(x = "Amount spent on campaign", y = "Total value of conversions")
+```     
+#### it looks like the more we spend, the more we get back, but the amount of data is quite sparse at the right-hand side of the budget, so this is not very reliable.
+#### It is recommended that go into a bit more detail before we start making any decision regarding advertising budget. We can start by splitting the data by gender:    
+
+```{r}
+options(repr.plot.width=4, repr.plot.height=3)
+ggplot(data1178, aes(gender, ROAS)) + geom_boxplot() + scale_y_log10()
+
+```    
+#### The data look quite symmetrical with a log-transformed axis, but without the log-transformation, it doesn't fit the normal distribution.    
+
+```{r}
+#using a non-parametric test
+wilcox.test(ROAS ~ gender, data=data1178)
+```    
+
+```{r}
+#The median and the mean of these data
+data1178 %>%
+  dplyr::select(gender, ROAS) %>%
+  group_by(gender) %>%
+  filter(ROAS != 'Inf') %>%
+  summarise(medianROAS = median(ROAS), meanROAS = mean(ROAS))
+
+```     
+#### It looks like the ROAS is a higher for males than females.    
+#### The median does give us a more accurate estimation of what the ROAS would be for a particular adID, there are a lot of points that pull the data towards the right. Over time, the ROAS is more likely to tend towards the mean. Using that figure, we can see that the ROAS differences by gender are quite striking and, depending on the profit margins involved, could make the difference between the campaign being profitable or not.
+## Looking at interests next:
+```{r}
+options(repr.plot.width=8, repr.plot.height=3)
+ggplot(data1178, aes(as.factor(interest), Clicks)) + geom_boxplot() +
+  labs(x = "Interest Identifier", y = "Number of Clicks")
+```    
+
+```{r}
+options(repr.plot.width=8, repr.plot.height=3)
+data1178 %>%
+  ggplot(aes(as.factor(interest), ROAS)) + geom_boxplot() + scale_y_log10() +
+  labs(x = "Interest Identifier", y = "ROAS")
+
+```    
+
+#### Different interest groups are performing differently. We can quantify that and look at our best performers by ROAS.      
+```{r}
+data1178 %>%
+  dplyr::select(interest, ROAS, Clicks) %>%
+  group_by(interest) %>%
+  filter(ROAS != 'Inf') %>%
+  summarise(medianROAS = round(median(ROAS) ,2), 
+            meanROAS = round(mean(ROAS), 2), clicks = sum(Clicks)) %>%
+  arrange(desc(meanROAS)) %>%
+  head(n = 10)
+
+
+
+```    
+
+### Analysis by gender:    
+
+```{r}
+options(repr.plot.width=8, repr.plot.height=3)
+data1178 %>%
+  filter(interest == 101 | interest == 15 | interest == 21) %>%
+  ggplot(aes(x = as.factor(interest), y = ROAS, fill = gender)) + geom_boxplot() + scale_y_log10() +
+  labs(x = 'Interest ID', y = 'ROAS')
+```     
+
+    
+    
+```{r}
+data1178 %>%
+  dplyr::select(interest, gender, ROAS, Clicks) %>%
+  group_by(interest, gender) %>%
+  filter(ROAS != 'Inf', interest == 101 | interest == 15 | interest == 21) %>%
+  summarise(medianROAS = round(median(ROAS), 2),
+            meanROAS = round(mean(ROAS) ,2), clicks = sum(Clicks)) %>%
+  arrange(desc(meanROAS))
+
+```     
+#### The campaign budgets for males with interests 21 and 15, and females with interest 15 could also be increased, with a reduction in the spend on the demographics with the lowest ROAS. Also an increasing on the budget to display our ads to males with interest 101 might make a lot of sense.    
+
+### Analysis by age:
+
+```{r}
+options(repr.plot.width=8, repr.plot.height=4)
+data1178 %>%
+  filter(interest == 21 | interest == 15 & gender == 'M') %>%
+  group_by(age, interest) %>% 
+  ggplot(aes(x = as.factor(age), y = ROAS, fill = as.factor(interest))) + geom_boxplot() + scale_y_log10() +
+  labs(x = 'Age group', y = 'ROAS') + scale_fill_discrete(name="Interest\nID")
+
+```     
+
+
+```{r}
+data1178 %>%
+  dplyr::select(age, interest, gender, ROAS, Clicks) %>%
+  group_by(age, interest) %>%
+  filter(ROAS != 'Inf', interest == 21 | interest == 15, gender == 'M') %>%
+  summarise(medianROAS = round(median(ROAS), 2),
+            meanROAS = round(mean(ROAS) ,2), clicks = sum(Clicks)) %>%
+  arrange(desc(meanROAS))
+
+
+```    
+
+
+#### The best ROAS with the 30 - 34 year old age group, so we could think about increasing the spend to increase our visibility there. However, the more granular we go with the data, the lower our number of observations and the less sure we can be about these differences being genuine, rather than simply noise.    
+
+```{r}
+{r}
+# simple prediction
+housedata$predictedprice = predict(model, housedata)
+head(housedata)
+
+plotpred = housedata%>%ggplot(aes(price, predictedprice)) + geom_point(color='Blue') + stat_smooth(color='Black') + theme_bw() + labs(x='Actual Price', y='Predicted Price', title='Actual by Predicted Price')
+
+ggplotly(plotpred)
+```
+

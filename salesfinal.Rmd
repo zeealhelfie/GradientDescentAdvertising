@@ -1,0 +1,71 @@
+---
+title: "advertisingfinal"
+author: "Zahraa Alshalal"
+date: "2023-05-14"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+```     
+
+```{r}
+# packages
+library(dplyr)
+library(tidyverse)
+library(heatmaply)
+library(MASS)
+library(DataExplorer)
+library(Hmisc)
+library(polycor)
+# packages
+library(dplyr)
+library(plotly)
+library(tidyverse)
+library(MASS)
+library(DataExplorer)
+library(Hmisc)
+library(polycor)
+library(corrplot)
+library(htmlwidgets)
+library(moderndive)
+library(leaps)
+library('IRdisplay')
+```      
+     
+```{r}
+#import data
+data = read.csv("~/Desktop/spring23/math697/rcode/facebook/fbdata.csv")
+# look at the data
+glimpse(data)
+```     
+```{r}
+# replace character string age ranges with number
+data$age[data$age == '30-34'] = 32
+data$age[data$age == '35-39'] = 37
+data$age[data$age == '40-44'] = 42
+data$age[data$age == '45-49'] = 47
+
+# convert variable to integer
+data$age <- as.integer(data$age)
+
+data$gender[data$gender == 'M'] = 0
+data$gender[data$gender == 'F'] = 1
+data$gender = as.integer(data$gender)
+
+```
+
+
+```{r}
+
+model = lm(Spent ~ . , data = data)
+```      
+```{r}
+# Stepwise regression model
+step.model <- stepAIC(model, direction = "both", 
+                      trace = FALSE)
+summary(step.model)
+```
+
+
+
