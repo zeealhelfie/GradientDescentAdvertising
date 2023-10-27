@@ -92,3 +92,21 @@ Feature selection involves identifying the most relevant and informative feature
 - x represents an individual data point.
 - $\mu$ refers to the average value of each feature.
 - $\sigma$ The standard deviation of the measure of the dispersion or spread of the values within each feature.
+
+* Note: when applying the transformation (StandardScaler) to the testing data (X\_test) -in future steps-, the same mean and standard deviation calculated from the training data are used. This ensures that the testing data is standardized using the same scaling parameters. This way maintaining consistency and avoiding data leakage between the training and testing sets. Data leakage leads to overly optimistic interpretations of the estimates.
+
+### Selecting the performance metrics:
+
+- Mean Squared Error (MSE): metric used to measure the average squared difference between the predicted and actual values. It provides an indication of how well the model`s predictions match the true values. A lower MSE value indicates better model performance, with smaller errors between predicted and actual values.
+    
+ MSE $= \frac{1}{n} \sum\limits_{i=1}^n (\hat{y_i} -y_i)^2$
+   
+- $R^2$: is a statistical measure that represents the proportion of the variance in the dependent variable (response variable) that is predictable from the independent variables (predictor variables). It quantifies the goodness of fit of the model (normal distribution assumption). $R^2$ ranges between 0 and 1, with higher values indicating a better fit of the model to the data. A value of 1 indicates that the model perfectly predicts the dependent variable.
+    $$R^2 = 1 - \frac{SSR}{SST} = 1 - \frac{\sum\limits_{i=1}^n(\hat{y_i}-y_i)^2}{\sum\limits_{i=1}^n(y_i -\bar{y})^2}$$
+    
+- SSR: Sum of Squared Residuals.
+- SST: Total Sum of Squares.
+* Note:  $\hat{y_i}$ represents the prediction values or points, $\bar{y}$ represents the mean of all the actual values, and $y_i$ represents the actual values or the points.
+
+
+
