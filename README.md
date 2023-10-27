@@ -205,9 +205,9 @@ $$\begin{aligned}
 we get the n+1 updated rule as follows: 
 
 
-\begin{aligned} 
+$$\begin{aligned} 
 \beta_{n}:=\beta_{n}- \frac{\alpha}{m} \sum\limits_{i=1}^m [(h_\beta(x^{(i)})-y^{(i)})]x_n^i
-\end{aligned}
+\end{aligned}$$
 
 
 Repeat equation 1.9 until convergence.
