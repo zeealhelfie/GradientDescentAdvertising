@@ -215,3 +215,59 @@ $$\begin{aligned}
 Repeat equation 1.9 until convergence.
 Once the algorithm converges and estimates the coefficients, the resulting coefficients can be used to generate predictions for the response variable. These predicted values are then compared with the actual values (Y) to evaluate the performance of the linear regression model. 
     
+### Results:
+
+For the OLS method:
+
+Training set: the OLS model achieved an MSE of 0.65, indicating that, on average, the predicted values deviated from the actual values by 0.65 units.The R-squared value of $78.47\%$ suggests that approximately $78.47\%$ of the variance in the target variable can be explained by the OLS model.
+
+Testing set: the MSE slightly increased to 0.69, indicating a slightly higher average deviation of 0.69 units. The R-squared value of $76.87\%$ suggests that the OLS model can explain approximately $76.87\%$ of the variance in the target variable in the testing set.
+
+For the gradient descent method:
+
+Training set: the gradient descent model achieved an MSE of 0.65, which is comparable to the OLS model's MSE.
+The R-squared value of $76.68\%$ indicates that approximately $76.68\%$ of the variance in the target variable can be explained by the gradient descent model.
+
+Testing set: the MSE remains at 0.69, similar to the OLS model's testing MSE. The R-squared value of $78.43\%$ suggests that the gradient descent model can explain approximately $78.43\%$ of the variance in the target variable.
+
+
+Interpretation:
+
+The linear regression model, using ordinary least squares, demonstrates a reasonably good fit to the data, as indicated by the low MSE values and relatively high R-squared values in both the training and testing sets.
+
+
+Conclusion:
+
+
+The OLS and gradient descent models effectively predict the target variable, "spent," using the provided features. The models exhibit similar performance in terms of MSE and R-squared values, demonstrating their suitability for understanding and predicting the relationship between the predictors and the target variable. The models have shown satisfactory fits to the data and achieved comparable prediction accuracy.
+
+Future steps:
+
+It's important to remark that further analysis and modeling may be necessary to determine the significance and robustness of the results. Additionally, contemplation should be given to other factors such as feature selection, model assumptions, and potential overfitting or underfitting issues.
+
+
+Key Findings and Insights:
+
+Throughout this research, I have learned about the process of making accurate predictions in the context of advertising sales optimization using Facebook data. I learned various aspects, from the initial data-cleaning process to the final modeling stage. Here are the pivotal takeaways:
+
+1. Data Cleaning and Preprocessing:
+
+I have learned the importance of exhaustive data cleaning and preprocessing. By carefully treating different data types, removing duplicates, and addressing outliers, I ensured the goodness and quality of the dataset. This step was critical in preventing biases and errors from impacting the subsequent modeling process.
+
+2. Feature Selection:
+
+I discovered the significance of feature selection. By considering the relevance and impact of each feature, I refined the dataset to include the most informative variables. 
+
+3. Model Selection and Evaluation:
+
+I gained knowledge about different modeling techniques and their suitability for the given problems. By using the gradient descent algorithm in intersection with multi-linear regression, I effectively optimized the advertising sales predictions. I learned the importance of selecting appropriate evaluation metrics, such as MSE and R-squared, to assess the accuracy and performance of the models objectively.
+
+4. Hyperparameter Tuning:
+
+I identified the significance of hyperparameter tuning in achieving optimal model performance. Through careful experimentation and iteration, I learned how to select an appropriate learning rate for the gradient descent algorithm. This process helped me strike a balance between convergence speed and stability, ultimately leading to accurate predictions.
+
+5. Interpretability and Insights:
+
+I learned the value of interpreting the models and their predictions. By analyzing the coefficient values and their significance, I accumulated insights into the relative influence of each feature on the outcomes of the dataset. This understanding allowed me to draw actionable conclusions and make informed decisions regarding modeling a dataset.
+
+In conclusion, my research journey has provided me with valuable learning on the importance of data cleaning, feature engineering, model selection, hyperparameter tuning, and interpretation. This knowledge has trained me with the skills and understanding required to make accurate predictions for data optimization. Moving forward, the understanding gained from this research will serve as a solid foundation for further advancements and applications in the field of data analysis. 
