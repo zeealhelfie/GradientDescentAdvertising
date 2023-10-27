@@ -145,7 +145,7 @@ The ordinary least squares is a technique used for finding the best-fitting curv
 
 formula: 
 
-    $$\hat{{\beta}}=\left(\mathbf{X}^{\top} \mathbf{X}\right)^{-1} \mathbf{X}^{\top} \mathbf{y}$$
+    β̂ = (Xᵀ X)⁻¹ Xᵀ y
 
 - $\hat\beta$= the estimated coefficients vector
 - X = matrix regressor variable X
@@ -162,7 +162,7 @@ The hypothesis function for the Gradient Descent can be written as:
 
 Using $\beta$ for consistency
   
-    $$h(X) = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + ... + \beta_n x_n$$
+    h(X) = β₀ + β₁ x₁ + β₂ x₂ + ... + βₙ xₙ
 
 - $\hat\beta$ = the estimated coefficients 
 - x = predictor variables
