@@ -87,4 +87,8 @@ Feature selection involves identifying the most relevant and informative feature
   Standardization: Scaling by standardization can weaken the impact of outliers to some extent. By subtracting the mean and dividing by the standard deviation, outliers can be `pulled` towards the mean and their influence on the analysis can be reduced. However, extreme outliers may still have a considerable impact even after scaling.
   z-score standardization: a technique that involves transforming the data in such a way that the resulting values have a mean of 0 and a standard deviation of 1. Scaling preserves the shape and distribution of the data but changes the scale. The standardization formula is as follows:
   $$z = \frac{x-\mu}{\sigma}$$
-
+  
+- z is the standardized value.
+- x represents an individual data point.
+- $\mu$ refers to the average value of each feature.
+- $\sigma$ The standard deviation of the measure of the dispersion or spread of the values within each feature.
