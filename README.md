@@ -99,7 +99,7 @@ Feature selection involves identifying the most relevant and informative feature
 
 - Mean Squared Error (MSE): metric used to measure the average squared difference between the predicted and actual values. It provides an indication of how well the model`s predictions match the true values. A lower MSE value indicates better model performance, with smaller errors between predicted and actual values.
     
- MSE $= \frac{1}{n} \sum\limits_{i=1}^n (\hat{y_i} -y_i)^2$
+  $$MSE = \frac{1}{n} \sum\limits_{i=1}^n (\hat{y_i} -y_i)^2$$
    
 - $R^2$: is a statistical measure that represents the proportion of the variance in the dependent variable (response variable) that is predictable from the independent variables (predictor variables). It quantifies the goodness of fit of the model (normal distribution assumption). $R^2$ ranges between 0 and 1, with higher values indicating a better fit of the model to the data. A value of 1 indicates that the model perfectly predicts the dependent variable.
     $$R^2 = 1 - \frac{SSR}{SST} = 1 - \frac{\sum\limits_{i=1}^n(\hat{y_i}-y_i)^2}{\sum\limits_{i=1}^n(y_i -\bar{y})^2}$$
@@ -123,14 +123,14 @@ MLR is a statistical model used to describe the relationship between two or more
 The model equation:
     $$y = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + ... + \beta_n x_n + \epsilon$$
 
-    - y: response.
-    -  x: predictor variables
-    -  $\beta$: the coefficients
-    -  $\epsilon$: the error term or residual
+- y: response.
+- x: predictor variables
+- $\beta$: the coefficients
+- $\epsilon$: the error term or residual
 
 ### Fitting the data into a linear regression model using scikit-learn:
 The equation for the linear regression model with scikit-learn can be represented as:
-    $$X\beta=Y$$
+    $$X_\beta=Y$$
         - m = 1143 rows, n = 11 columns.
         - Y$(n*1)$: spent.
         - X$(m*n)$: [ad\_id, xyz\_campaign\_id, fb\_campaign\_id, age, gender, interest, impressions, clicks, total\_conversion, total\_conversion, approved\_conversion]
@@ -142,7 +142,6 @@ Note: scikit-learn assumes that the residuals (the differences between the predi
 The ordinary least squares is a technique used for finding the best-fitting curve to a given set of points by estimating the coefficients vector ($\hat{\beta}$) that minimizes the difference between the predicted values ($X\hat{\beta}$) and the actual values (Y). By utilizing the least-squares approach, the OLS method attempts to optimize the coefficients ($\hat{\beta}$) by minimizing the sum of squared differences between the predicted values and the actual values.
 
   #### OLS Formula: 
-  
     $$\hat{{\beta}}=\left(\mathbf{X}^{\top} \mathbf{X}\right)^{-1} \mathbf{X}^{\top} \mathbf{y}$$
 
 - $\hat\beta$= the estimated coefficients vector
@@ -156,7 +155,7 @@ The ordinary least squares is a technique used for finding the best-fitting curv
 
   In addition to the ordinary least squares (OLS) method, the gradient descent algorithm provides an alternative approach for estimating the coefficients in a linear regression model. It is an iterative optimization method used to find the optimal values of the coefficients by minimizing the cost function. The gradient descent algorithm iteratively updates the coefficients based on the gradient (partial derivatives) of the cost function with respect to the coefficients. The algorithm starts with initial random values for the coefficients and gradually adjusts them by taking small steps based on the calculated gradients. The objective is to iteratively reach minimal values for the loss function, ultimately achieving the best-fit coefficients. The direction in which the algorithm travels during each iteration is determined by the slope of the tangent (derivative) at each point. By following the direction of the negative gradient, the algorithm seeks to drop the cost function landscape and converge to the minimum. 
 
-    The hypothesis function for the Gradient Descent can be written as:
+The hypothesis function for the Gradient Descent can be written as:
 
   * using $\beta$ for consistency
   
