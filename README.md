@@ -142,8 +142,7 @@ Note: scikit-learn assumes that the residuals (the differences between the predi
 The ordinary least squares is a technique used for finding the best-fitting curve to a given set of points by estimating the coefficients vector ($\hat{\beta}$) that minimizes the difference between the predicted values ($X\hat{\beta}$) and the actual values (Y). By utilizing the least-squares approach, the OLS method attempts to optimize the coefficients ($\hat{\beta}$) by minimizing the sum of squared differences between the predicted values and the actual values.
 
   #### OLS Formula: 
-  
-    $\hat{{\beta}}=\left(\mathbf{X}^{\top} \mathbf{X}\right)^{-1} \mathbf{X}^{\top} \mathbf{y}$
+    $$\hat{{\beta}}=\left(\mathbf{X}^{\top} \mathbf{X}\right)^{-1} \mathbf{X}^{\top} \mathbf{y}$$
 
 - $\hat\beta$= the estimated coefficients vector
 - X = matrix regressor variable X
