@@ -15,38 +15,30 @@ The evaluation of the model's performance will provide valuable insights into th
 
 ## Time Outline:
 
-\begin{enumerate}
-  \item Initial Data Analysis and Simple Linear Regression
-  \begin{itemize}
-    \item Data search and exploration
-    \item Data cleaning
-    \item Visualization of the data
-    \item Interpretation of the visualizations and insights gained
-    \item Fitting a simple linear regression (SLR) model
-    \item Application of the Gradient Descent Method to SLR
-    \item Step size selection for the Gradient Descent Method
-  \end{itemize}
 
-  \item Expansion to Multiple Linear Regression (MLR)
-  \begin{itemize}
-    \item Introduction of additional variables and features for more comprehensive analysis
-    \item Construction of a multiple linear regression model incorporating the new variables
-    \item Evaluation of the model performance and identification of potential improvements
-  \end{itemize}
+1- Initial Data Analysis and Simple Linear Regression
+  
+- Data search and exploration
+- Data cleaning
+- Visualization of the data
+- Interpretation of the visualizations and insights gained
+- Fitting a simple linear regression (SLR) model
+- Application of the Gradient Descent Method to SLR
+- Step size selection for the Gradient Descent Method
+  
+2- Expansion to Multiple Linear Regression (MLR)
+- Introduction of additional variables and features for more comprehensive analysis
+- Construction of a multiple linear regression model incorporating the new variables
+- Evaluation of the model performance and identification of potential improvements
 
-  \item Iterative Application of Gradient Descent
-  \begin{itemize}
-    \item Iterative application of the gradient descent algorithm to improve the accuracy of the MLR model
-    \item Tracking the progression of optimization results and performance metrics
-    \item Comparison of findings and insights gained during each iteration
-    \item Feature selection process to identify the most relevant variables
-    \item Evaluation of the impact of feature selection on model performance and optimization results
-  \end{itemize}
+3- Iterative Application of Gradient Descent
+- Iterative application of the gradient descent algorithm to improve the accuracy of the MLR model
+- Tracking the progression of optimization results and performance metrics
+- Comparison of findings and insights gained during each iteration
+- Feature selection process to identify the most relevant variables
+- Evaluation of the impact of feature selection on model performance and optimization results
 
-  \item Data Processing and Feature Engineering
-    \begin{itemize}
-    \item Assessment of the impact of data processing and feature engineering on optimization results
-    \item Examined the distribution of the predictor variables and applied appropriate normalization techniques to ensure better model performance.
-    \item Explored the significance of understanding the data distribution and its impact on training MLR models, emphasizing the need for data distribution analysis as a critical step in preparing data for predictive modeling.
-  \end{itemize}
-\end{enumerate}
+4- Data Processing and Feature Engineering
+- Assessment of the impact of data processing and feature engineering on optimization results
+- Examined the distribution of the predictor variables and applied appropriate normalization techniques to ensure better model performance.
+- Explored the significance of understanding the data distribution and its impact on training MLR models, emphasizing the need for data distribution analysis as a critical step in preparing data for predictive modeling.
