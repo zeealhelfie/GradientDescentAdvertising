@@ -141,7 +141,10 @@ Note: scikit-learn assumes that the residuals (the differences between the predi
 
 The ordinary least squares is a technique used for finding the best-fitting curve to a given set of points by estimating the coefficients vector ($\hat{\beta}$) that minimizes the difference between the predicted values ($X\hat{\beta}$) and the actual values (Y). By utilizing the least-squares approach, the OLS method attempts to optimize the coefficients ($\hat{\beta}$) by minimizing the sum of squared differences between the predicted values and the actual values.
 
-  #### OLS Formula: 
+#### OLS Formula: 
+
+formula: 
+
     $$\hat{{\beta}}=\left(\mathbf{X}^{\top} \mathbf{X}\right)^{-1} \mathbf{X}^{\top} \mathbf{y}$$
 
 - $\hat\beta$= the estimated coefficients vector
@@ -157,9 +160,9 @@ The ordinary least squares is a technique used for finding the best-fitting curv
 
 The hypothesis function for the Gradient Descent can be written as:
 
-  * using $\beta$ for consistency
+Using $\beta$ for consistency
   
-    $$ h(X) = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + ... + \beta_n x_n$$
+    $$h(X) = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + ... + \beta_n x_n$$
 
 - $\hat\beta$ = the estimated coefficients 
 - x = predictor variables
