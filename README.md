@@ -1,4 +1,4 @@
-# GradientDescentAdvertising
+# Optimizing Advertising Sales Using the Gradient Descent Algorithm: A Case Study with Facebook Data
 Implementation of a gradient descent algorithm designed for optimizing advertising sales using Facebook data.
 
 ## Abstract
